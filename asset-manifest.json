@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/todo-list-app/static/css/main.7f04f694.css",
+    "main.js": "/todo-list-app/static/js/main.11fc9dcb.js",
+    "static/media/bg-desktop-dark.jpg": "/todo-list-app/static/media/bg-desktop-dark.73e47dbb723ebc772ef0.jpg",
+    "index.html": "/todo-list-app/index.html",
+    "main.7f04f694.css.map": "/todo-list-app/static/css/main.7f04f694.css.map",
+    "main.11fc9dcb.js.map": "/todo-list-app/static/js/main.11fc9dcb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7f04f694.css",
+    "static/js/main.11fc9dcb.js"
+  ]
+}
