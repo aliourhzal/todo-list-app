@@ -21,6 +21,12 @@ function TodoItem(props) {
 			return todo;
 		});
 		props.updateTodos(alter);
+		localStorage.clear();
+		for (const todo of alter)
+		{
+			localStorage.setItem(todo.id, JSON.stringify(todo));
+			console.log(todo);
+		}
 		if (props.mode === 'completed')
 			props.updateFiltered(alter.filter(todo => todo.completed));
 		else if (props.mode === 'active')
@@ -38,6 +44,7 @@ function TodoItem(props) {
 		const alter = props.filteredTodos.filter(todo => todo.id !== Number(props.children.id));
 		props.updateTodos(rest);
 		props.updateFiltered(alter);
+		localStorage.removeItem(props.children.id);
 	}
 
 	return (

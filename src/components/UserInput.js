@@ -17,6 +17,7 @@ function UserInput(props) {
 			content: content,
             completed: false
 		}
+		localStorage.setItem(newContent.id, JSON.stringify(newContent));
         setContent('');
 		props.updateTodos(oldTodos => {
 			const content = [...oldTodos, newContent];

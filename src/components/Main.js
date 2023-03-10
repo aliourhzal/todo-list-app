@@ -1,88 +1,26 @@
 import { useState }				from 'react';
 import Title					from './Title';
-import TodoBody, { Ticket }		from './TodoBody';
+import TodoBody					from './TodoBody';
 import UserInput				from './UserInput';
-import * as filterTools			from './filterTools';
+import Options, { option }		from './Options';
 
-let option = 'all';
-
-function Filters (props) {
-
-	const allFilter = () => {
-		option = 'all';
-        filterTools.allFilter(props.todos, props.updateFiltered);
-	}
-
-	const activeFilter = () => {
-		option = 'active';
-        filterTools.activeFilter(props.todos, props.updateFiltered);
-	}
-
-	const completedFilter = () => {
-        option = 'completed';
-        filterTools.completedFilter(props.todos, props.updateFiltered);
-    }
-
-	return (
-		<div className='options'>
-			<input id='all' name='options' type="radio" onChange={allFilter}/>
-			<label htmlFor="all">All</label>
-			<input id='active' name='options' type="radio" onChange={activeFilter} />
-			<label htmlFor="active">Active</label>
-			<input id='completed' name='options' type="radio" onChange={completedFilter} />
-			<label htmlFor="completed">Completed</label>
-		</div>
-	);
-
-}
-
-function Clear(props) {
-	const clearAll = () => {
-		const rest = props.todos.filter(todo => !todo.completed);
-		props.updateTodos(rest);
-		if (props.mode === 'completed')
-			props.updateFiltered([]);
-		else if (props.mode === 'all')
-			props.updateFiltered(rest);
-	}
-	return (
-		<span className='clear' onClick={clearAll}>{props.children}</span>
-	);
-}
-
-function Options(props) {
-
-	return (
-		<Ticket className='optionsTicket'>
-			<span className='counter'>{props.filteredTodos.length} items left</span>
-			<Filters todos={props.todos} updateFiltered={props.updateFiltered}/>
-			<Clear mode={props.mode} todos={props.todos} updateTodos={props.updateTodos} updateFiltered={props.updateFiltered}>Clear Completed</Clear>
-		</Ticket> 
-	);
+const retieveTodos = () => {
+	let oldElements = [];
+	const oldTodos = {...localStorage};
+	const toInsert = Object.keys(oldTodos).map((item) => {
+		return ({...JSON.parse(oldTodos[item])});
+	});
+	oldElements = [...toInsert];
+	oldElements.sort((a,b) => {
+		const aid = Number(a.id);
+		const bid = Number(b.id);
+		return aid - bid;
+	})
+	return (oldElements);
 }
 
 function Main() {
-	const [todos, setTodos] = useState([
-		{
-			id: 1,
-            content: 'Learn React',
-            completed: false
-		},
-		{
-			id: 2,
-            content: 'Learn Redux',
-            completed: false
-		},
-		{
-			id: 3,
-            content: 'aaaaa',
-            completed: false
-		},{
-			id: 4,
-            content: 'dkushgiud',
-            completed: false
-		},
-	]);
+	const [todos, setTodos] = useState([...retieveTodos()]);
 	const [filteredTodos, setFilteredTodos] = useState(todos);
 
 	return (<main>
