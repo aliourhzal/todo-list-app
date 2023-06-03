@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Delete, Get, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import CreateAccountDto from 'src/utils/dtos/CreateAccount.dto';
-import { AuthGuard } from 'src/auth/auth.authguard';
+import { Public } from 'src/utils/public.metadata';
 import { TodoDto } from '../utils/dtos/Todo.dto';
 import { Todo } from '@prisma/client';
 
@@ -10,24 +10,22 @@ export class UsersController {
 
     constructor (private readonly usersService: UsersService){}
 
+    @Public()
     @Post('create')
     async register(@Body() createAccount: CreateAccountDto) {
         return await this.usersService.createUser(createAccount);
     }
 
-    @UseGuards(AuthGuard)
     @Get('todos')
     async getTodos(@Req() request) {
         return await this.usersService.retrieveTodos(request.user.sub);
     }
 
-    @UseGuards(AuthGuard)
     @Post('todos')
     async addTodo(@Body() newTodo: TodoDto, @Req() request): Promise<Todo> {
         return await this.usersService.setTodos(newTodo, request.user.sub);
     }
 
-    @UseGuards(AuthGuard)
     @Put('todos')
     async updateTodo(@Body('id') id: any, @Req() request) {
         if (id)
@@ -36,7 +34,6 @@ export class UsersController {
             throw new BadRequestException();
     }
 
-    @UseGuards(AuthGuard)
     @Delete('todos/one')
     async deleteTodo(@Body('id') id: string, @Req() request) {
         if (id)
@@ -45,7 +42,6 @@ export class UsersController {
             throw new BadRequestException();
     }
 
-    @UseGuards(AuthGuard)
     @Delete('todos/completed')
     async deleteCompleted(@Body('id') id: string, @Req() request) {
         if (id)
